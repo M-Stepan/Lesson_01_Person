@@ -17,12 +17,25 @@ public class Person {
      * @return - возвращает true если этот человек другого пола, в отличие от второго человека и они не муж и жена, иначе false
      */
     public boolean marry(Person person) {
-        if (person == null || man == person.man || spouse == person) return false;
-        divorce();
-        person.divorce();
-        person.spouse = this;
-        spouse = person;
-        return true;
+        if (this.man != person.man && person.spouse == null && this.spouse == null) {
+            //свадьба
+            this.spouse = person;
+            person.spouse = this;
+            System.out.println(person.name + " и " + person.spouse.name + " поженились");
+            return true;
+        } else if (this.man != person.man && (person.spouse != null || this.spouse != null)) {
+            //разводим всех
+            person.divorce();
+            this.divorce();
+            //свадьба
+            this.spouse = person;
+            person.spouse = this;
+            System.out.println(person.name + " и " + person.spouse.name + " поженились");
+            return true;
+        } else {
+            System.out.println(this.name  + " и " + person.name + " не удалось поженить");
+            return false;
+        }
     }
     /**
      * spouse = null - если есть супруг
@@ -30,9 +43,10 @@ public class Person {
      */
     public boolean divorce() {
         if (spouse == null) return false;
-        spouse.spouse = null;
-        spouse = null;
+        System.out.println(this.name + " и " + spouse.name + " разведены");
+        this.spouse = null;
         return true;
     }
 
 }
+
